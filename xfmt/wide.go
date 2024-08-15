@@ -33,7 +33,7 @@ func wideInt[V constraints.Integer](v V, space string) string {
 		s += parts[i]
 	}
 	if negative {
-		s = fmt.Sprintf("- %s", s)
+		s = "-" + s
 	}
 	return s
 }

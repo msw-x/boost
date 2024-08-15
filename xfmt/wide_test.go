@@ -13,7 +13,7 @@ func TestWideInt(t *testing.T) {
 	}
 	t1 := func(v int, e string) {
 		t0(v, e)
-		t0(-v, "- "+e)
+		t0(-v, "-"+e)
 	}
 	t1(2, "2")
 	t1(475, "475")
