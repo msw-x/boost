@@ -17,7 +17,7 @@ type core struct {
 	timeLoc  *time.Location
 	maxid    int
 	mapid    map[int]bool
-	hook     func(Message)
+	//hook     func(Message)
 	initedAt time.Time
 }
 
@@ -26,10 +26,10 @@ var c core
 func (o *core) init(opts Options) {
 	o.mutex.Lock()
 	defer o.mutex.Unlock()
-	openNewFile := o.opts.File != opts.File || o.opts.Dir != opts.Dir
+	openFile := o.opts.File != opts.File || o.opts.Dir != opts.Dir
 	o.opts = opts
 	if openFile {
-		o.openFile(false)
+		//o.openFile(false)
 	}
 	o.maxid = 2
 	o.mapid = make(map[int]bool)
@@ -45,7 +45,7 @@ func (o *core) close() {
 	}
 }
 
-func (o *core) stat() string {
+func (o *core) stat2() string {
 	o.mutex.Lock()
 	defer o.mutex.Unlock()
 	/*

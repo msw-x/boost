@@ -6,6 +6,10 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+func WideInt[V constraints.Integer](v V) string {
+	return wideInt(v, " ")
+}
+
 func wideInt[V constraints.Integer](v V, space string) string {
 	s := fmt.Sprint(v)
 	var parts []string

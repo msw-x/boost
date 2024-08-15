@@ -14,7 +14,7 @@ func DisplayDays(t time.Duration) string {
 }
 
 func DisplayMs(t time.Duration) string {
-	return makeDisplay(t).ms()
+	return makeDisplay(t).mls()
 }
 
 func DisplayAuto(t time.Duration) string {
@@ -47,7 +47,7 @@ func (o display) std() string {
 func (o display) days() string {
 	days := o.h / 24
 	o.h = o.h % 24
-	s := v.std()
+	s := o.std()
 	if days > 0 {
 		plural := ""
 		if days > 1 {
@@ -58,13 +58,13 @@ func (o display) days() string {
 	return s
 }
 
-func (o display) ms() string {
-	s = fmt.Sprintf("%s.%03d", o.std(), o.ms)
+func (o display) mls() string {
+	return fmt.Sprintf("%s.%03d", o.std(), o.ms)
 }
 
 func (o display) auto() string {
-	if o.h == o.m == o.s == 0 {
+	if o.h == 0 && o.m == 0 && o.s == 0 {
 		return fmt.Sprintf("%d ms", o.ms)
 	}
-	return days()
+	return o.days()
 }
