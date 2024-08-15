@@ -3,7 +3,7 @@ package xfmt
 import (
 	"fmt"
 
-	"constraints"
+	"golang.org/x/exp/constraints"
 )
 
 func wideInt[V constraints.Integer](v V, space string) string {

@@ -38,7 +38,7 @@ func FactJoinSlice[T any](v []T) string {
 }
 
 func FactJoinSliceWith[T any](s string, v []T) string {
-	l := make([]string)
+	var l []string
 	for _, a := range v {
 		e := fmt.Sprint(a)
 		if e != "" {

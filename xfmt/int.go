@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"constraints"
+	"golang.org/x/exp/constraints"
 )
 
 const UnitPrefix = "KMGTPE"

@@ -1,4 +1,4 @@
-package ufmt
+package xfmt
 
 import (
 	"encoding/hex"
