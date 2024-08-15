@@ -3,10 +3,12 @@ package xfmt
 import (
 	"fmt"
 	"io"
+	"math"
 	"slices"
 	"strconv"
 	"strings"
 
+	"github.com/msw-x/boost/xstring"
 	"golang.org/x/exp/constraints"
 )
 
@@ -77,7 +79,7 @@ func (o *fmtInt[V]) parse(f string) (err error) {
 	return
 }
 
-func (o *fmtInt[V]) convert(v V) string {
+func (o *fmtInt[V]) convert(v V) (s string) {
 	i := v
 	rank := 0
 	base := V(o.base)
@@ -89,5 +91,29 @@ func (o *fmtInt[V]) convert(v V) string {
 		i /= base
 		rank++
 	}
-	return ""
+	if len(o.space) == 0 {
+		s = fmt.Sprintf("%d", i)
+	} else {
+		s = wideInt(i, o.space)
+	}
+	if o.precision > 0 {
+		div := V(math.Pow(float64(base), float64(rank)))
+		f := float64(v) / float64(div)
+		_, fract := xstring.Pair(fmt.Sprintf(fmt.Sprintf("%%.%df", o.precision), f), ".")
+		if !o.fixed {
+			ok := true
+			for ok {
+				fract, ok = strings.CutSuffix(fract, "0")
+			}
+		}
+		if len(fract) > 0 {
+			s = fmt.Sprintf("%s.%s", s, fract)
+		}
+	}
+	prefix := ""
+	if rank > 0 {
+		prefix = string(UnitPrefix[rank-1])
+	}
+	s = fmt.Sprintf("%s%s%s", s, o.space, prefix)
+	return
 }

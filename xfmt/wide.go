@@ -11,6 +11,10 @@ func WideInt[V constraints.Integer](v V) string {
 }
 
 func wideInt[V constraints.Integer](v V, space string) string {
+	negative := v < 0
+	if negative {
+		v = -v
+	}
 	s := fmt.Sprint(v)
 	var parts []string
 	for len(s) > 3 {
@@ -27,6 +31,9 @@ func wideInt[V constraints.Integer](v V, space string) string {
 			s += space
 		}
 		s += parts[i]
+	}
+	if negative {
+		s = fmt.Sprintf("- %s", s)
 	}
 	return s
 }
