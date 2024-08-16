@@ -219,4 +219,8 @@ func TestInt(t *testing.T) {
 	t1(".Ki", 1000, "1K")
 	t1(".Ki", 1024, "1K")
 	t1(".Ki", 1060, "1K")
+
+	type qint int
+	var q qint = 100
+	Int(".", q)
 }
