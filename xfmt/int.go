@@ -11,7 +11,8 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-const UnitPrefix = "KMGTPE"
+const UnitPrefixInc = "KMGTPE"
+const UnitPrefixDec = "mµnpfa" // TODO
 
 func Int[V constraints.Integer](f string, v V) string {
 	var m fmtInt[V]
@@ -47,14 +48,17 @@ func (o *fmtInt[V]) parse(f string) (err error) {
 			case ' ':
 				o.space = " "
 			case '.':
-				o.maxRank = len(UnitPrefix) + 1
+				o.maxRank = len(UnitPrefixInc) + 1
 			case ':':
 				rank = &o.maxRank
 			default:
 				if '0' <= b && b <= '9' {
 					ps += string(b)
 				} else {
-					i := slices.Index([]byte(UnitPrefix), b) + 1
+					i := slices.Index([]byte(UnitPrefixInc), b) + 1
+					if i == 0 {
+						i = -(slices.Index([]byte(UnitPrefixDec), b) + 1)
+					}
 					if i == 0 {
 						break
 					} else {
@@ -124,8 +128,14 @@ func (o *fmtInt[V]) convert(v V) (s string) {
 		s = wideInt(i, o.space)
 	}
 	s += tail
-	if rank > 0 {
-		s += o.space + string(UnitPrefix[rank-1])
+	if rank != 0 {
+		var r byte
+		if rank > 0 {
+			r = UnitPrefixInc[rank-1]
+		} else {
+			r = UnitPrefixDec[-rank+1]
+		}
+		s += o.space + string(r)
 	}
 	if negative {
 		s = "-" + s
